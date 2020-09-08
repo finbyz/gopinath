@@ -1,4 +1,28 @@
 frappe.ui.form.on("Purchase Receipt", {
+    onload: (frm) => {
+        frm.trigger('naming_series');
+    },
+    naming_series: function (frm) {
+        if (frm.doc.__islocal && frm.doc.company && !frm.doc.amended_from) {
+            frappe.call({
+                method: "gopinath.api.check_counter_series",
+                args: {
+                    'name': frm.doc.naming_series,
+                    'date': frm.doc.transaction_date,
+                    'company_series': frm.doc.company_series || null,
+                },
+                callback: function (e) {
+                    frm.doc.series_value = e.message;
+                }
+            });
+        }
+    },
+    company: function (frm) {
+        frm.trigger('naming_series');
+    },
+    transaction_date: function (frm) {
+        frm.trigger('naming_series');
+    },
     validate: function (frm) {
         frm.doc.items.forEach(function (d) {
             frappe.db.get_value("Item", d.item_code, 'maintain_as_is_stock', function (r) {
