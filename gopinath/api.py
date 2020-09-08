@@ -53,7 +53,7 @@ def before_naming(self, method):
 		fiscal = get_fiscal(date)
 		self.fiscal = fiscal
 		
-		month = str(datetime.datetime.strptime((date),'%Y-%m-%d').month)
+		month = str(datetime.datetime.strptime(str(date),'%Y-%m-%d').month)
 		
 		self.month = month
 
@@ -92,7 +92,7 @@ def check_counter_series(name, company_series = None, date = None, month=None):
 	if not date:
 		date = datetime.date.today()
 
-	month = str(datetime.datetime.strptime((date),'%Y-%m-%d').month)
+	month = str(datetime.datetime.strptime(str(date),'%Y-%m-%d').month)
 
 	fiscal = get_fiscal(date)
 	
