@@ -1,0 +1,18 @@
+include MANIFEST.in
+include requirements.txt
+include *.json
+include *.md
+include *.py
+include *.txt
+recursive-include gopinath *.css
+recursive-include gopinath *.csv
+recursive-include gopinath *.html
+recursive-include gopinath *.ico
+recursive-include gopinath *.js
+recursive-include gopinath *.json
+recursive-include gopinath *.md
+recursive-include gopinath *.png
+recursive-include gopinath *.py
+recursive-include gopinath *.svg
+recursive-include gopinath *.txt
+recursive-exclude gopinath *.pyc
