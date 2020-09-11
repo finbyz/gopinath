@@ -126,9 +126,6 @@ frappe.ui.form.on("Purchase Receipt", {
 
 
 frappe.ui.form.on("Purchase Receipt Item", {
-    quantity: function (frm, cdt, cdn) {
-        frm.events.cal_rate_qty(frm, cdt, cdn)
-    },
     price: function (frm, cdt, cdn) {
         frm.events.cal_rate_qty(frm, cdt, cdn)
     },
@@ -147,9 +144,6 @@ frappe.ui.form.on("Purchase Receipt Item", {
     supplier_no_of_packages: function (frm, cdt, cdn) {
         frm.events.cal_rate_qty(frm, cdt, cdn)
     },
-    supplier_quantity: function (frm, cdt, cdn) {
-        frm.events.cal_rate_qty(frm, cdt, cdn)
-    },
     supplier_concentration: function (frm, cdt, cdn) {
         frm.events.cal_rate_qty(frm, cdt, cdn)
     },
@@ -157,9 +151,6 @@ frappe.ui.form.on("Purchase Receipt Item", {
         frm.events.cal_rate_qty(frm, cdt, cdn)
     },
     accepted_no_of_packages: function (frm, cdt, cdn) {
-        frm.events.cal_rate_qty(frm, cdt, cdn)
-    },
-    accepted_quantity: function (frm, cdt, cdn) {
         frm.events.cal_rate_qty(frm, cdt, cdn)
     },
     accepted_concentration: function (frm, cdt, cdn) {
