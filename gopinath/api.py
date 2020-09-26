@@ -16,8 +16,8 @@ def pr_cal_rate_qty(self):
 			if not d.concentration:
 				frappe.throw("{} Row: {} Please add concentration".format(d.doctype,d.idx))
 				
-		if d.get('packing_size') and d.get('no_of_packages'):
-			d.qty = d.received_qty = (d.packing_size * d.no_of_packages)
+		if d.get('packing_size') and d.get('no_of_packages') and d.get('tare_weight'):
+			d.qty = d.received_qty = ((d.packing_size - d.tare_weight) * d.no_of_packages)
 
 			if maintain_as_is_stock:
 				d.quantity = d.qty * d.concentration / 100
@@ -44,8 +44,9 @@ def pr_cal_rate_qty(self):
 			d.short_quantity = d.quantity - d .supplier_quantity
 		else:
 			d.short_quantity = d.accepted_quantity - d .supplier_quantity
+		d.supplier_amount = flt(d.supplier_quantity * d.price)
+		d.rate = flt(d.supplier_amount / d.qty)
 		d.amount_difference = flt(d.short_quantity) * flt(d.price)
-
 def before_naming(self, method):
 	if not self.get('amended_from') and not self.get('name'):
 		date = self.get("transaction_date") or self.get("posting_date") or  self.get("manufacturing_date") or  self.get("date") or getdate()

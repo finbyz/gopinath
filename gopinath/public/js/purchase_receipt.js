@@ -29,9 +29,9 @@ frappe.ui.form.on("Purchase Receipt", {
                 if (!d.supplier_qty) {
                     frappe.model.set_value(d.doctype, d.name, 'supplier_qty', d.qty)
                 }
-                if(d.packing_size && d.no_of_packages) {
-                    frappe.model.set_value(d.doctype, d.name, 'qty', flt(d.packing_size * d.no_of_packages));
-                    frappe.model.set_value(d.doctype, d.name, 'received_qty', flt(d.packing_size * d.no_of_packages));
+                if(d.packing_size && d.no_of_packages && d.tare_weight) {
+                    frappe.model.set_value(d.doctype, d.name, 'qty', flt((d.packing_size - d.tare_weight) * d.no_of_packages));
+                    frappe.model.set_value(d.doctype, d.name, 'received_qty', flt((d.packing_size - d.tare_weight) * d.no_of_packages));
                     if (r.maintain_as_is_stock) {
                         if (!d.concentration) {
                             frappe.throw("Please add concentration for Item " + d.item_code)
@@ -80,8 +80,8 @@ frappe.ui.form.on("Purchase Receipt", {
                 frappe.model.set_value(d.doctype, d.name, 'supplier_qty', d.qty)
             }
             if (d.packing_size && d.no_of_packages) {
-                frappe.model.set_value(d.doctype, d.name, 'qty', flt(d.packing_size * d.no_of_packages));
-                frappe.model.set_value(d.doctype, d.name, 'received_qty', flt(d.packing_size * d.no_of_packages));
+                frappe.model.set_value(d.doctype, d.name, 'qty', flt((d.packing_size -d.tare_weight)* d.no_of_packages));
+                frappe.model.set_value(d.doctype, d.name, 'received_qty', flt((d.packing_size - d.tare_weight) * d.no_of_packages));
                 if (r.maintain_as_is_stock) {
                     if (!d.concentration) {
                         frappe.throw("Please add concentration for Item " + d.item_code)
@@ -133,6 +133,9 @@ frappe.ui.form.on("Purchase Receipt Item", {
         frm.events.cal_rate_qty(frm, cdt, cdn)
     },
     packing_size: function (frm, cdt, cdn) {
+        frm.events.cal_rate_qty(frm, cdt, cdn)
+    },
+    tare_weight: function (frm, cdt, cdn) {
         frm.events.cal_rate_qty(frm, cdt, cdn)
     },
     no_of_packages: function (frm, cdt, cdn) {
