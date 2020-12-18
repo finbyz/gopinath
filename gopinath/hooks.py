@@ -92,7 +92,9 @@ doctype_js = {
 doc_events = {
     "Purchase Receipt": {
         "before_naming": "gopinath.api.before_naming",
-        "before_validate": "gopinath.api.pr_before_validate"
+    },
+    "Stock Entry":{
+        "before_naming": "gopinath.api.before_naming",
     }
 }
 # Scheduled Tasks
