@@ -3,7 +3,25 @@ from frappe import _
 from frappe.utils import flt, cint, getdate
 from erpnext.accounts.utils import get_fiscal_year
 import datetime
+import re
 
+@frappe.whitelist()
+def rename_se(existing_name, series_value, naming_series):
+	naming_series_len = len([i.start() for i in re.finditer('#',naming_series)]) # Find # length in naming_series
+	new_name = re.findall("^(.*[\\\/])",existing_name)[0] # Before Slash
+	last_digits = re.findall("[^\/]+$",existing_name)[0] # After Slash
+	len_last_digits = len(last_digits) # After Slash
+	if series_value:
+		if len(series_value) > naming_series_len:
+			frappe.throw("Please Enter {naming_series_len} Digit Series Value".format(naming_series_len=naming_series_len))
+		temp_digits = last_digits.replace(last_digits,series_value)
+		if len(temp_digits)!=naming_series_len:
+			temp_digits = temp_digits.rjust((naming_series_len-len(temp_digits)) + len(temp_digits),'0')
+		new_name += temp_digits
+		if new_name != existing_name:
+			frappe.rename_doc("Stock Entry", existing_name, new_name, force=True)
+			frappe.db.set_value("Stock Entry",new_name,"series_value",series_value)
+			return new_name
 # def pr_before_validate(self,method):
 # 	pr_cal_rate_qty(self)
 	
@@ -117,3 +135,4 @@ def get_fiscal(date):
 	fiscal = frappe.db.get_value("Fiscal Year", fy, 'fiscal')
 
 	return fiscal if fiscal else fy.split("-")[0][2:] + fy.split("-")[1][2:]
+

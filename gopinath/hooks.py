@@ -35,6 +35,7 @@ app_license = "GPL 3.0"
 # ----------
 doctype_js = {
     "Purchase Receipt": "public/js/purchase_receipt.js",
+    "Stock Entry": "public/js/stock_entry.js",
 }
 
 # application home page (will override Website Settings)
