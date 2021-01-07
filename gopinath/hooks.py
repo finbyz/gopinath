@@ -118,7 +118,11 @@ doc_events = {
 # 		"gopinath.tasks.monthly"
 # 	]
 # }
-
+scheduler_events = {
+ 	"daily": [
+		"gopinath.batch_controller.get_batch_data"
+	]
+}
 # Testing
 # -------
 
