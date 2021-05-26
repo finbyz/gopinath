@@ -136,3 +136,36 @@ def get_fiscal(date):
 
 	return fiscal if fiscal else fy.split("-")[0][2:] + fy.split("-")[1][2:]
 
+
+def basic_validations(self):
+	if self.transfer_type == 'Purchase':
+		self.to_shareholder = ''
+		if not self.from_shareholder:
+			frappe.throw(_('The field From Shareholder cannot be blank'))
+		if not self.from_folio_no:
+			frappe.throw("Please Add Folio No.")
+		if not self.asset_account:
+			frappe.throw(_('The field Asset Account cannot be blank'))
+	elif (self.transfer_type == 'Issue'):
+		self.from_shareholder = ''
+		if not self.to_shareholder:
+			frappe.throw(_('The field To Shareholder cannot be blank'))
+		if not self.to_folio_no:
+			frappe.throw("Please Add Folio No.")
+		if not self.asset_account:
+			frappe.throw(_('The field Asset Account cannot be blank'))
+	else:
+		if not self.from_shareholder or not self.to_shareholder:
+			frappe.throw(_('The fields From Shareholder and To Shareholder cannot be blank'))
+		if not self.to_folio_no:
+			frappe.throw("Please Add Folio No.")
+	if not self.equity_or_liability_account:
+			frappe.throw(_('The field Equity/Liability Account cannot be blank'))
+	if self.from_shareholder == self.to_shareholder:
+		frappe.throw(_('The seller and the buyer cannot be the same'))
+	if self.no_of_shares != self.to_no - self.from_no + 1:
+		frappe.throw(_('The number of shares and the share numbers are inconsistent'))
+	if not self.amount:
+		self.amount = self.rate * self.no_of_shares
+	if self.amount != self.rate * self.no_of_shares:
+		frappe.throw(_('There are inconsistencies between the rate, no of shares and the amount calculated'))

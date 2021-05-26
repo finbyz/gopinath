@@ -1,0 +1,54 @@
+# Copyright (c) 2013, FInByz Tech Pvt Ltd and contributors
+# For license information, please see license.txt
+
+from __future__ import unicode_literals
+import frappe
+from frappe.utils import cstr, cint, getdate
+from frappe import msgprint, _
+
+def execute(filters=None):
+	if not filters: filters = {}
+
+	if not filters.get("date"):
+		frappe.throw(_("Please select date"))
+
+	columns = get_columns(filters)
+
+	date = filters.get("date")
+
+	data = []
+
+	transfers = get_all_transfers(date, filters)
+	for transfer in transfers:
+		row = [transfer.from_shareholder or transfer.to_shareholder, transfer.date, transfer.transfer_type,
+			transfer.share_type, transfer.no_of_shares, transfer.rate, transfer.amount,
+			transfer.company, transfer.name]
+
+		data.append(row)
+
+	return columns, data
+
+def get_columns(filters):
+	columns = [
+		_("Shareholder") + ":Link/Shareholder:150",
+		_("Date") + ":Date:100",
+		_("Transfer Type") + "::140",
+		_("Share Type") + "::90",
+		_("No of Shares") + "::90",
+		_("Rate") + ":Currency:90",
+		_("Amount") + ":Currency:90",
+		_("Company") + "::150",
+		_("Share Transfer") + ":Link/Share Transfer:90"
+	]
+	return columns
+
+def get_all_transfers(date, filters):
+	condition = ' '
+	if filters.get('shareholder'):
+		condition = " and (from_shareholder = '{0}' or to_shareholder = '{0}')".format(filters.get('shareholder'))
+	query  = frappe.db.sql("""SELECT * FROM `tabShare Transfer`
+		WHERE DATE(date) <='{date}' {condition}
+		ORDER BY date""".format(date=date,condition=condition),as_dict=1)
+	
+	if query:
+		return query

@@ -36,6 +36,7 @@ app_license = "GPL 3.0"
 doctype_js = {
     "Purchase Receipt": "public/js/purchase_receipt.js",
     "Stock Entry": "public/js/stock_entry.js",
+    "Share Transfer": "public/js/share_transfer.js",
 }
 
 # application home page (will override Website Settings)
@@ -142,3 +143,6 @@ scheduler_events = {
 # 	"Task": "gopinath.task.get_dashboard_data"
 # }
 
+from erpnext.accounts.doctype.share_transfer.share_transfer import ShareTransfer
+from gopinath.api import basic_validations
+ShareTransfer.basic_validations = basic_validations

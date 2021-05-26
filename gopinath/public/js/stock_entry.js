@@ -16,7 +16,7 @@ refresh: function(frm){
                         }
                     }
                 })
-            },)
+            })
         }
     }
 })
