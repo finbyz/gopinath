@@ -16,6 +16,14 @@ frappe.ui.form.on('Share Transfer', {
                 }
             })
         }
-    }
+    },
+    no_of_shares: function(frm){
+        frm.trigger('security_premium')
+    },
+    security_premium: function(frm){
+        if (frm.doc.no_of_shares && frm.doc.security_premium){
+            frm.set_value('security_premium_amount',flt(frm.doc.no_of_shares) * flt(frm.doc.security_premium))
+        }
+    },
 
 })
