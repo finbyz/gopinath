@@ -146,3 +146,9 @@ scheduler_events = {
 from erpnext.accounts.doctype.share_transfer.share_transfer import ShareTransfer
 from gopinath.api import basic_validations
 ShareTransfer.basic_validations = basic_validations
+
+from erpnext.accounts.doctype.share_transfer.share_transfer import ShareTransfer
+from gopinath.gopinath.doc_events.share_transfer import on_submit as share_on_submit
+from gopinath.gopinath.doc_events.share_transfer import on_cancel as share_on_cancel
+ShareTransfer.on_submit = share_on_submit
+ShareTransfer.on_cancel = share_on_cancel 

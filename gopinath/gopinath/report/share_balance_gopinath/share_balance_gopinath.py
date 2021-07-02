@@ -4,6 +4,7 @@
 from __future__ import unicode_literals
 import frappe
 from frappe import msgprint, _
+from frappe.utils import flt
 
 def execute(filters=None):
 	if not filters: filters = {}
@@ -12,9 +13,10 @@ def execute(filters=None):
 
 
 	data = []
-
-	share_holder, share_type, no_of_shares, rate, amount = 0,1, 2, 3, 4
-
+	if filters.get('date'):
+		share_holder, share_type, no_of_shares, rate, amount = 0,1, 2, 4, 5
+	else:
+		share_holder, share_type, no_of_shares, rate, amount = 0,1, 2, 3, 4
 	all_shares = get_all_shares(filters)
 	for share_entry in all_shares:
 		# share_entry = frappe.get_doc("Shareholder",share_doc.name)
@@ -31,9 +33,15 @@ def execute(filters=None):
 				break
 		# new entry
 		if not row:
-			row = [share_entry.parent,
-				share_entry.share_type, share_entry.no_of_shares, share_entry.rate, share_entry.amount]
-
+			if filters.get('date'):
+				lst_to = frappe.db.get_list("Share Transfer",{"to_shareholder":share_entry.parent,"date":("<=",filters.get('date'))},["no_of_shares"])
+				lst_from = frappe.db.get_list("Share Transfer",{"from_shareholder":share_entry.parent,"date":("<=",filters.get('date'))},["no_of_shares"])
+				final_balance = flt(sum(i.no_of_shares for i in lst_to))-flt(sum(i.no_of_shares for i in lst_from))			
+				row = [share_entry.parent,
+					share_entry.share_type, share_entry.no_of_shares, final_balance,share_entry.rate, share_entry.amount]
+			else:
+				row = [share_entry.parent,
+					share_entry.share_type, share_entry.no_of_shares,share_entry.rate, share_entry.amount]				
 			data.append(row)
 
 	return columns, data
@@ -42,7 +50,12 @@ def get_columns(filters):
 	columns = [
 		_("Shareholder") + ":Link/Shareholder:150",
 		_("Share Type") + "::90",
-		_("No of Shares") + "::90",
+		_("No of Shares") + "::90",]
+	if filters.get('date'):
+		columns +=[
+			_("Share Balance") + "::90",
+		]
+	columns +=[
 		_("Average Rate") + ":Currency:90",
 		_("Amount") + ":Currency:90"
 	]

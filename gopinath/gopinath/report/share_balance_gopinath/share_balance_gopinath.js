@@ -5,11 +5,16 @@
 frappe.query_reports["Share Balance Gopinath"] = {
 	"filters": [
 		{
+			"fieldname":"date",
+			"label": __("Date"),
+			"fieldtype": "Date",
+		},
+		{
 			"fieldname":"shareholder",
 			"label": __("Shareholder"),
 			"fieldtype": "Link",
 			"options": "Shareholder"
-		}
+		},
 	]
 
 };

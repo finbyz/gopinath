@@ -12,10 +12,21 @@ frappe.query_reports["Share Ledger Gopinath"] = {
 			"reqd": 1
 		},
 		{
-			"fieldname":"shareholder",
-			"label": __("Shareholder"),
+			"fieldname":"from_shareholder",
+			"label": __("From Shareholder"),
 			"fieldtype": "Link",
 			"options": "Shareholder"
+		},
+		{
+			"fieldname":"to_shareholder",
+			"label": __("To Shareholder"),
+			"fieldtype": "Link",
+			"options": "Shareholder"
+		},
+		{
+			"fieldname":"show_balance",
+			"label": __("Show Balance"),
+			"fieldtype": "Check",
 		}
 	]
 };
