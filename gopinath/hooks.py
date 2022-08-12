@@ -97,6 +97,12 @@ doc_events = {
     },
     "Stock Entry":{
         "before_naming": "gopinath.api.before_naming",
+    },
+    "Inward Sample":{
+        "before_naming": "gopinath.api.before_naming",
+    },
+    "Outward Sample":{
+        "before_naming": "gopinath.api.before_naming",
     }
 }
 # Scheduled Tasks
